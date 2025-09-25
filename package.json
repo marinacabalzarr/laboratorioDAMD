@@ -1,24 +1,48 @@
 {
-    "name": "user-services",
+    "name": "lab03-microservices-nosql",
     "version": "1.0.0",
-    "description": "User Service - gerenciamento de usuários",
-    "main": "server.js",
+    "description": "Sistema de Microsserviços com API Gateway e NoSQL - PUC Minas",
+    "main": "client-demo.js",
     "scripts": {
-      "start": "node server.js",
-      "dev": "nodemon server.js"
+    "start": "concurrently \"npm run start:user\" \"npm run start:product\" \"npm run start:gateway\"",
+    "start:user": "cd services/user-service && npm start",
+    "start:product": "cd services/product-service && npm start",
+    "start:gateway": "cd api-gateway && npm start",
+    "dev": "concurrently \"npm run dev:user\" \"npm run dev:product\" \"npm run dev:gateway\"",
+    "dev:user": "cd services/user-service && npm run dev",
+    "dev:product": "cd services/product-service && npm run dev",
+    "dev:gateway": "cd api-gateway && npm run dev",
+    "demo": "node client-demo.js",
+    "health": "curl -s http://localhost:3000/health",
+    "install:all": "npm install && cd services/user-service && npm install && cd ../product-service && npm install && cd ../../api-gateway && npm install",
+    "clean": "rm -rf node_modules services/*/node_modules api-gateway/node_modules",
+    "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "keywords": [
+    "microservices",
+    "nosql",
+    "api-gateway",
+    "service-discovery",
+    "circuit-breaker",
+    "sistemas-distribuidos",
+    "puc-minas"
+    ],
+    "author": "Aluno PUC Minas",
+    "license": "MIT",
+    "repository": {
+    "type": "git",
+    "url": "https://github.com/aluno-pucminas/lab03-microservices-nosql.git"
+    },
+    "engines": {
+    "node": ">=16.0.0",
+    "npm": ">=8.0.0"
     },
     "dependencies": {
-      "bcrypt": "^5.1.1",
-      "cors": "^2.8.5",
-      "express": "^4.19.2",
-      "helmet": "^7.1.0",
-      "jsonwebtoken": "^9.0.2",
-      "morgan": "^1.10.0",
-      "path": "^0.12.7",
-      "uuid": "^9.0.0"
+    "axios": "^1.6.0",
+    "fs-extra": "^11.1.0",
+    "uuid": "^9.0.0"
     },
     "devDependencies": {
-      "nodemon": "^3.0.0"
+    "concurrently": "^7.6.0"
     }
-  }
-  
+    }

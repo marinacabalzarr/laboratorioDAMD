@@ -8,8 +8,8 @@ const { v4: uuidv4 } = require('uuid');
 const path = require('path');
 
 // shared utils
-const JsonDatabase = require('../shared/JsonDatabase');
-const serviceRegistry = require('../shared/serviceRegistry');
+const JsonDatabase = require('../../shared/JsonDatabase');
+const serviceRegistry = require('../../shared/serviceRegistry');
 
 // -------------------- config --------------------
 const app = express();

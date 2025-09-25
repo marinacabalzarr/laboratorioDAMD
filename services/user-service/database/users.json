@@ -1,0 +1,16 @@
+[
+  {
+    "id": "f0f015af-44b8-4ef5-90df-c254dc23b406",
+    "email": "admin@demo.com",
+    "username": "admin",
+    "password": "$2b$10$4p1wPiclKVsr/VqFkY5VpOIovs8N1t0MuSlzh4R/wfMdyR2FiUVW6",
+    "firstName": "Admin",
+    "lastName": "User",
+    "preferences": {
+      "defaultStore": "",
+      "currency": "BRL"
+    },
+    "createdAt": "2025-09-25T00:25:09.077Z",
+    "updatedAt": "2025-09-25T00:25:09.133Z"
+  }
+]
