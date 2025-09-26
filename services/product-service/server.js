@@ -6,8 +6,8 @@ const { v4: uuidv4 } = require('uuid');
 const path = require('path');
 const axios = require('axios');
 // Importar banco NoSQL e service registry
-const JsonDatabase = require('../shared/JsonDatabase');
-const serviceRegistry = require('../shared/serviceRegistry');
+const JsonDatabase = require('../../shared/JsonDatabase');
+const serviceRegistry = require('../../shared/serviceRegistry');
 class ProductService {
 constructor() {
 this.app = express();

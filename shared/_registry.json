@@ -1,0 +1,18 @@
+{
+  "services": {
+    "user-service": [
+      {
+        "url": "http://localhost:3001",
+        "healthy": true,
+        "fails": 0,
+        "lastSeen": 1758846279215,
+        "lastOk": 1758846279215,
+        "meta": {}
+      }
+    ],
+    "product-service": [],
+    "list-service": [],
+    "item-service": []
+  },
+  "updatedAt": "2025-09-26T00:24:39.215Z"
+}

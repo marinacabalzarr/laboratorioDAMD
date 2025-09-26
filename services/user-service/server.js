@@ -28,6 +28,7 @@ app.use(morgan('dev'));
 
 // -------------------- DB --------------------
 const dbPath = path.join(__dirname, 'database'); // ./services/user-services/database
+
 const usersDb = new JsonDatabase(dbPath, 'users');
 
 // helper: retira campos sensíveis
