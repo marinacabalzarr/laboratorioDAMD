@@ -1,0 +1,50 @@
+name: task_manager
+description: "A new Flutter project."
+publish_to: 'none' # Remove esta linha se for publicar no pub.dev
+
+version: 1.0.0+1
+
+environment:
+  sdk: ">=3.0.0 <4.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  # 📅 Localização (tradução do calendário, datas, etc)
+  flutter_localizations:
+    sdk: flutter
+
+  # 🗄️ Banco de dados local
+  sqflite: ^2.3.0
+  path_provider: ^2.1.1
+  path: ^1.8.3
+
+  # 📸 Câmera e sensores
+  camera: ^0.10.5+9              # Câmera
+  permission_handler: ^11.3.1    # Gerenciamento de permissões
+  sensors_plus: ^4.0.2           # Sensores (acelerômetro)
+  image_picker: ^1.0.4
+
+    # 📍 Localização e geocodificação
+  geolocator: ^10.1.0            # GPS
+  geocoding: ^2.1.1              # Endereços
+
+  # 🔢 Geração de IDs únicos
+  uuid: ^4.2.1
+
+  # 🌎 Formatação de datas (ex: dd/MM/yyyy)
+  intl: ^0.20.2
+
+  # 📱 Ícones estilo iOS (opcional)
+  cupertino_icons: ^1.0.8
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  # 🧹 Regras de boas práticas do Flutter
+  flutter_lints: ^5.0.0
+
+flutter:
+  uses-material-design: true
