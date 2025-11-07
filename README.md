@@ -19,7 +19,7 @@ samples, guidance on mobile development, and a full API reference.
 https://youtu.be/-4z3VT7P06I
 
  ## Screenshots
-**Tela principal com tarefa**
+### **Tela principal com tarefa**
 <img width="309" height="688" alt="Captura de Tela 2025-10-30 às 22 13 40" src="https://github.com/user-attachments/assets/01f572d2-02a8-458d-a849-d50fa7e58b77" />
 
 **Card de estatísticas**
