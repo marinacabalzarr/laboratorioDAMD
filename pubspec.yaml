@@ -11,6 +11,7 @@ dependencies:
   flutter:
     sdk: flutter
 
+
   # 📅 Localização (tradução do calendário, datas, etc)
   flutter_localizations:
     sdk: flutter
@@ -38,6 +39,11 @@ dependencies:
 
   # 📱 Ícones estilo iOS (opcional)
   cupertino_icons: ^1.0.8
+
+  connectivity_plus: ^6.0.5
+
+  http: ^1.2.0
+
 
 dev_dependencies:
   flutter_test:

@@ -41,12 +41,18 @@ class _TaskFormScreenState extends State<TaskFormScreen> {
       _descriptionController.text = widget.task!.description;
       _priority = widget.task!.priority;
       _completed = widget.task!.completed;
-      _photoPaths = [...widget.task!.photoPaths];
+
+      // ✅ REMOVE FOTOS QUE NÃO EXISTEM MAIS NO DISPOSITIVO
+      _photoPaths = widget.task!.photoPaths
+          .where((path) => File(path).existsSync())
+          .toList();
+
       _latitude = widget.task!.latitude;
       _longitude = widget.task!.longitude;
       _locationName = widget.task!.locationName;
     }
   }
+
 
   @override
   void dispose() {
@@ -130,33 +136,56 @@ class _TaskFormScreenState extends State<TaskFormScreen> {
     setState(() => _isLoading = true);
 
     try {
-      final task = Task(
-        id: widget.task?.id,
-        title: _titleController.text.trim(),
-        description: _descriptionController.text.trim(),
-        priority: _priority,
-        completed: _completed,
-        photoPaths: _photoPaths,
-        latitude: _latitude,
-        longitude: _longitude,
-        locationName: _locationName,
-      );
+      final now = DateTime.now();
+
+      Task task;
 
       if (widget.task == null) {
+        // ✅ NOVA TAREFA
+        task = Task(
+          title: _titleController.text.trim(),
+          description: _descriptionController.text.trim(),
+          priority: _priority,
+          completed: _completed,
+          photoPaths: _photoPaths,
+          latitude: _latitude,
+          longitude: _longitude,
+          locationName: _locationName,
+          createdAt: now,
+          updatedAt: now, // ✅ LWW
+        );
+
         await DatabaseService.instance.create(task);
       } else {
+        // ✅ EDIÇÃO DE TAREFA (ATUALIZA updatedAt)
+        task = widget.task!.copyWith(
+          title: _titleController.text.trim(),
+          description: _descriptionController.text.trim(),
+          priority: _priority,
+          completed: _completed,
+          photoPaths: _photoPaths,
+          latitude: _latitude,
+          longitude: _longitude,
+          locationName: _locationName,
+          updatedAt: now, // ✅ LWW
+        );
+
         await DatabaseService.instance.update(task);
       }
 
       Navigator.pop(context, true);
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Erro: $e'), backgroundColor: Colors.red),
+        SnackBar(
+          content: Text('Erro: $e'),
+          backgroundColor: Colors.red,
+        ),
       );
     } finally {
       if (mounted) setState(() => _isLoading = false);
     }
   }
+
 
   @override
   Widget build(BuildContext context) {

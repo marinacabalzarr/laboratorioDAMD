@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import '../models/task.dart';
-import '../services/location_service.dart';
+import '../services/connectivity_service.dart';
 
 class TaskCard extends StatelessWidget {
   final Task task;
@@ -65,6 +65,9 @@ class TaskCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final priorityColor = _getPriorityColor();
+
+    // ✅ se estiver offline, mostra "Pendente"; se online, "Sincronizado"
+    final bool isOffline = !ConnectivityService.instance.isOnline;
 
     return Card(
       elevation: 2,
@@ -156,8 +159,11 @@ class TaskCard extends StatelessWidget {
                               child: Row(
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
-                                  Icon(_getPriorityIcon(),
-                                      color: priorityColor, size: 14),
+                                  Icon(
+                                    _getPriorityIcon(),
+                                    color: priorityColor,
+                                    size: 14,
+                                  ),
                                   const SizedBox(width: 4),
                                   Text(
                                     _getPriorityLabel(),
@@ -188,7 +194,8 @@ class TaskCard extends StatelessWidget {
                                 child: const Row(
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
-                                    Icon(Icons.photo, size: 14, color: Colors.blue),
+                                    Icon(Icons.photo,
+                                        size: 14, color: Colors.blue),
                                     SizedBox(width: 4),
                                     Text(
                                       'Fotos',
@@ -202,42 +209,13 @@ class TaskCard extends StatelessWidget {
                                 ),
                               ),
 
-                            // LOCALIZAÇÃO
-                            if (task.hasLocation)
+                            // SHAKE TAG
+                            if (task.completed && task.wasCompletedByShake)
                               Container(
                                 padding: const EdgeInsets.symmetric(
                                   horizontal: 8,
                                   vertical: 4,
                                 ),
-                                decoration: BoxDecoration(
-                                  color: Colors.purple.withOpacity(0.1),
-                                  borderRadius: BorderRadius.circular(12),
-                                  border: Border.all(
-                                    color: Colors.purple.withOpacity(0.5),
-                                  ),
-                                ),
-                                child: const Row(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    Icon(Icons.location_on,
-                                        size: 14, color: Colors.purple),
-                                    SizedBox(width: 4),
-                                    Text(
-                                      'Local',
-                                      style: TextStyle(
-                                        fontSize: 12,
-                                        color: Colors.purple,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-
-                            // SHAKE TAG
-                            if (task.completed && task.wasCompletedByShake)
-                              Container(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 8, vertical: 4),
                                 decoration: BoxDecoration(
                                   color: Colors.green.withOpacity(0.1),
                                   borderRadius: BorderRadius.circular(12),
@@ -251,12 +229,62 @@ class TaskCard extends StatelessWidget {
                                     Icon(Icons.vibration,
                                         size: 14, color: Colors.green),
                                     SizedBox(width: 4),
-                                    Text("Shake",
-                                        style: TextStyle(
-                                            fontSize: 12, color: Colors.green))
+                                    Text(
+                                      "Shake",
+                                      style: TextStyle(
+                                        fontSize: 12,
+                                        color: Colors.green,
+                                      ),
+                                    ),
                                   ],
                                 ),
                               ),
+
+                            // ✅ STATUS DE SINCRONIZAÇÃO (PENDENTE / SINCRONIZADO)
+                            Container(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 8,
+                                vertical: 4,
+                              ),
+                              decoration: BoxDecoration(
+                                color: isOffline
+                                    ? Colors.orange.withOpacity(0.1)
+                                    : Colors.green.withOpacity(0.1),
+                                borderRadius: BorderRadius.circular(12),
+                                border: Border.all(
+                                  color: isOffline
+                                      ? Colors.orange.withOpacity(0.5)
+                                      : Colors.green.withOpacity(0.5),
+                                ),
+                              ),
+                              child: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Icon(
+                                    isOffline
+                                        ? Icons.cloud_off
+                                        : Icons.check_circle,
+                                    size: 14,
+                                    color: isOffline
+                                        ? Colors.orange
+                                        : Colors.green,
+                                  ),
+                                  const SizedBox(width: 4),
+                                  Text(
+                                    isOffline
+                                        ? 'Pendente'
+                                        : 'Sincronizado',
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.w500,
+                                      color: isOffline
+                                          ? Colors.orange
+                                          : Colors.green,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
                           ],
                         ),
                       ],
@@ -273,13 +301,14 @@ class TaskCard extends StatelessWidget {
               ),
             ),
 
-            // ✅ MINI GALERIA DE FOTOS
+            // ✅ MINI GALERIA DE FOTOS (COM TRATAMENTO DE ERRO)
             if (task.hasPhotos)
               SizedBox(
                 height: 90,
                 child: ListView(
                   scrollDirection: Axis.horizontal,
-                  padding: const EdgeInsets.fromLTRB(12, 0, 12, 12),
+                  padding:
+                  const EdgeInsets.fromLTRB(12, 0, 12, 12),
                   children: task.photoPaths.map((path) {
                     return Padding(
                       padding: const EdgeInsets.only(right: 8),
@@ -290,6 +319,18 @@ class TaskCard extends StatelessWidget {
                           width: 90,
                           height: 90,
                           fit: BoxFit.cover,
+                          errorBuilder:
+                              (context, error, stackTrace) {
+                            return Container(
+                              width: 90,
+                              height: 90,
+                              color: Colors.grey.shade300,
+                              child: const Icon(
+                                Icons.broken_image,
+                                color: Colors.grey,
+                              ),
+                            );
+                          },
                         ),
                       ),
                     );

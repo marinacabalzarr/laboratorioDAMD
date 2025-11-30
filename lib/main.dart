@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'screens/task_list_screen.dart';
 import 'services/camera_service.dart';
+import 'services/connectivity_service.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   // Inicializar câmera
   await CameraService.instance.initialize();
+
+  ConnectivityService.instance.initialize();
 
   runApp(const MyApp());
 }
