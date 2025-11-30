@@ -200,7 +200,7 @@ class DatabaseService {
     }).toList();
   }
 
-  // ✅ ADICIONAR AÇÃO NA FILA
+  // ✅ ADICIONAR AÇÃO NA FILAclear
   Future<void> addToSyncQueue({
     required String action, // CREATE | UPDATE | DELETE
     required int? entityId,
